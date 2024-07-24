@@ -36,6 +36,7 @@
             <div class="text-right mt-5">
                 <p>EPS: <span id="epsValue">0.00</span></p>
                 <p>Dividend: <span id="dividendValue">0.00</span></p>
+                <p>P/FCF: <span id="pfcfValue">0.00</span></p>
             </div>
         </div>
         <p id="shareValue">ZIM quarter</p>
@@ -43,17 +44,17 @@
         <div class="d-flex justify-content-between mb-4">
             <div class="range-container text-center">
                 <input type="range" class="custom-range" id="teus" min="0" max="3000" step="0.01" value="980"
-                    oninput="updateLabel('teus', 'TEUS')">
+                    oninput="updateLabel('teus', 'TEUs (x1000)')">
                 <small id="teusValue">TEUS: 980</small>
             </div>
             <div class="range-container text-center">
                 <input type="range" class="custom-range" id="ccfi" min="0" max="10000" value="1639"
-                    oninput="updateLabel('ccfi', 'CCFI')">
+                    oninput="updateLabel('ccfi', 'CCFI $ per TEU')">
                 <small id="ccfiValue">CCFI: 1639</small>
             </div>
             <div class="range-container text-center">
                 <input type="range" class="custom-range" id="opex" min="0" max="5000" step="0.01" value="1225"
-                    oninput="updateLabel('opex', 'OPEX')">
+                    oninput="updateLabel('opex', 'OPEX $ per TEU')">
                 <small id="opexValue">OPEX: 1225</small>
             </div>
         </div>
@@ -137,10 +138,12 @@
             // Example EPS and Dividend calculations (these should be based on your actual formulas)
             let eps = net_income / shares_outstanding; // Example: EPS = Net Income / 1000 shares
             let dividend = eps * 0.3; // Example: Dividend = 30% of Net Income
+            let pfcf = share_price / (eps*4)
 
             document.getElementById('epsValue').textContent = eps.toFixed(2);
             document.getElementById('title').textContent = `ZIM: $${share_price}`;
             document.getElementById('dividendValue').textContent = dividend.toFixed(2);
+            document.getElementById('pfcfValue').textContent = pfcf.toFixed(2);
 
 
             let result = {
