@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,25 +9,30 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-sankey"></script>
-    
+
     <style>
         .custom-range {
-            width: 200px; /* Adjusted width */
+            width: 200px;
+            /* Adjusted width */
         }
+
         .range-container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         .d-flex.justify-content-between {
-            justify-content: space-around; /* Adjust spacing for wider sliders */
+            justify-content: space-around;
+            /* Adjust spacing for wider sliders */
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="d-flex justify-content-between">
-            <h1 class="mt-5">ZIM</h1>
+            <h1 class="mt-5" id="title">ZIM</h1>
             <div class="text-right mt-5">
                 <p>EPS: <span id="epsValue">0.00</span></p>
                 <p>Dividend: <span id="dividendValue">0.00</span></p>
@@ -36,15 +42,18 @@
 
         <div class="d-flex justify-content-between mb-4">
             <div class="range-container text-center">
-                <input type="range" class="custom-range" id="teus" min="0" max="3000" step="0.01" value="980" oninput="updateLabel('teus', 'TEUS')">
+                <input type="range" class="custom-range" id="teus" min="0" max="3000" step="0.01" value="980"
+                    oninput="updateLabel('teus', 'TEUS')">
                 <small id="teusValue">TEUS: 980</small>
             </div>
             <div class="range-container text-center">
-                <input type="range" class="custom-range" id="ccfi" min="0" max="10000" value="1639" oninput="updateLabel('ccfi', 'CCFI')">
+                <input type="range" class="custom-range" id="ccfi" min="0" max="10000" value="1639"
+                    oninput="updateLabel('ccfi', 'CCFI')">
                 <small id="ccfiValue">CCFI: 1639</small>
             </div>
             <div class="range-container text-center">
-                <input type="range" class="custom-range" id="opex" min="0" max="5000" step="0.01" value="1225" oninput="updateLabel('opex', 'OPEX')">
+                <input type="range" class="custom-range" id="opex" min="0" max="5000" step="0.01" value="1225"
+                    oninput="updateLabel('opex', 'OPEX')">
                 <small id="opexValue">OPEX: 1225</small>
             </div>
         </div>
@@ -57,7 +66,7 @@
     </div>
     <script src="bundle.js"></script>
     <script>
-       
+
         // Declare initial values
         let teus = 980;
         let ccfi = 1639;
@@ -65,48 +74,29 @@
 
         let sankeyChart;
 
-        async function getStockPrice(symbol) {
-            const url = `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=demo`;
+        async function getRegularMarketPrice() {
+            const proxyUrl = 'https://api.allorigins.win/get?url=';
+            const targetUrl = encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/ZIM?region=US&lang=en-US&includePrePost=false&interval=1mo&useYfid=true&range=1d&corsDomain=finance.yahoo.com&.tsrc=finance');
+            const url = proxyUrl + targetUrl;
 
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-                console.log('API Response:', data); // Log the entire response
-                
-                if (data && data[0] && data[0].price) {
-                    const price = data[0].price;
-                    return price;
-                } else {
-                    console.error('Invalid data structure:', data);
-                    return null;
-                }
+                const parsedData = JSON.parse(data.contents);
+
+                // Extract the regularMarketPrice from the data
+                const regularMarketPrice = parsedData.chart.result[0].meta.regularMarketPrice;
+
+                return regularMarketPrice;
             } catch (error) {
-                console.error('Error fetching the stock price:', error);
-                return null;
+                console.error('Error fetching data:', error);
             }
         }
 
-        async function getSharesOutstanding(symbol) {
-            const url = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=demo`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                console.log('API Response:', data); // Log the entire response
-
-                if (data && data[0] && data[0].mktCap && data[0].price) {
-                    const sharesOutstanding = data[0].mktCap / data[0].price;
-                    return sharesOutstanding.toFixed(0);
-                } else {
-                    console.error('Invalid data structure:', data);
-                    return null;
-                }
-            } catch (error) {
-                console.error('Error fetching shares outstanding:', error);
-                return null;
-            }
-        }
-
+        // Usage
+        getRegularMarketPrice().then(price => {
+            console.log('Regular Market Price:', price);
+        });
         function updateLabel(rangeId, label) {
             var rangeValue = document.getElementById(rangeId).value;
             if (rangeId === 'teus' || rangeId === 'opex') {
@@ -128,11 +118,11 @@
         }
 
         async function calculateValues(teus, ccfi, opex) {
-            let revenue_container = teus*1000 * ccfi;
+            let revenue_container = teus * 1000 * ccfi;
             let revenue_others = 517000000;
 
             let total_revenue = revenue_container + revenue_others;
-            let opex_cost_services = teus*1000 * opex;
+            let opex_cost_services = teus * 1000 * opex;
             let depreciation = 298000000;
             let ga_expenses = 70000000;
 
@@ -141,15 +131,15 @@
             let taxes = Math.round(op_income / 5);
             let net_income = op_income - financial_expenses - taxes;
 
-            const share_price = await getStockPrice("ZIM");
-            const shares_outstanding = await getSharesOutstanding("ZIM");
-            
+            const share_price = await getRegularMarketPrice();
+            const shares_outstanding = 120321000;
+
             // Example EPS and Dividend calculations (these should be based on your actual formulas)
             let eps = net_income / shares_outstanding; // Example: EPS = Net Income / 1000 shares
-            let dividend = net_income * 0.3; // Example: Dividend = 30% of Net Income
+            let dividend = eps * 0.3; // Example: Dividend = 30% of Net Income
 
             document.getElementById('epsValue').textContent = eps.toFixed(2);
-            document.getElementById('shareValue').textContent = `ZIM quarter: $${share_price}`;
+            document.getElementById('title').textContent = `ZIM: $${share_price}`;
             document.getElementById('dividendValue').textContent = dividend.toFixed(2);
 
 
@@ -174,15 +164,15 @@
         function createSankeyChart(ctx, values) {
             const data = {
                 labels: [
-                    `Revenue container: M$${values.revenue_container}`, 
-                    `Revenue others: M$${values.revenue_others}`, 
-                    `Total revenue: M$${values.total_revenue}`, 
-                    `OPEX: M$${values.opex_cost_services}`, 
-                    `G and A: M$${values.ga_expenses}`, 
-                    `Depreciation: M$${values.depreciation}`, 
-                    `Operative income: M$${values.op_income}`, 
-                    `Taxes: M$${values.taxes}`, 
-                    `Financial expenses: M$${values.financial_expenses}`, 
+                    `Revenue container: M$${values.revenue_container}`,
+                    `Revenue others: M$${values.revenue_others}`,
+                    `Total revenue: M$${values.total_revenue}`,
+                    `OPEX: M$${values.opex_cost_services}`,
+                    `G and A: M$${values.ga_expenses}`,
+                    `Depreciation: M$${values.depreciation}`,
+                    `Operative income: M$${values.op_income}`,
+                    `Taxes: M$${values.taxes}`,
+                    `Financial expenses: M$${values.financial_expenses}`,
                     `Net income: M$${values.net_income}`
                 ],
                 datasets: [{
@@ -198,7 +188,7 @@
                         { from: `Operative income: M$${values.op_income}`, to: `Financial expenses: M$${values.financial_expenses}`, flow: values.financial_expenses },
                         { from: `Operative income: M$${values.op_income}`, to: `Net income: M$${values.net_income}`, flow: values.net_income }
                     ],
-                    colorFrom: (context) => context.dataset.data[context.dataIndex].from.includes('Operative income') ? 'blue' : 'grey',
+                    colorFrom: (context) => context.dataset.data[context.dataIndex].from.includes('Operative income') ? 'grey' : 'grey',
                     colorTo: (context) => {
                         const toLabel = context.dataset.data[context.dataIndex].to;
                         if (toLabel.includes('Net income')) return 'green';
@@ -240,18 +230,21 @@
             }
         }
 
-        function updateChart() {
-            const values = calculateValues(teus, ccfi, opex);
+        async function updateChart() {
+            const values = await calculateValues(teus, ccfi, opex);
             createSankeyChart(ctx, values);
         }
 
         const ctx = document.getElementById('mySankeyChart').getContext('2d');
         const initialValues = calculateValues(teus, ccfi, opex);
-        createSankeyChart(ctx, initialValues);
+        calculateValues(teus, ccfi, opex).then(initialValues => {
+            createSankeyChart(ctx, initialValues);
+        });
     </script>
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
