@@ -99,7 +99,7 @@
             console.log('Regular Market Price:', price);
         });
         function updateLabel(rangeId, label) {
-            var rangeValue = document.getElementById(rangeId).value;
+            rangeValue = Number(rangeValue).toLocaleString('en-US');
             /*if (rangeId === 'teus' || rangeId === 'opex') {
                 rangeValue = parseFloat(rangeValue).toFixed(2);
             }*/
