@@ -100,9 +100,9 @@
         });
         function updateLabel(rangeId, label) {
             var rangeValue = document.getElementById(rangeId).value;
-            if (rangeId === 'teus' || rangeId === 'opex') {
+            /*if (rangeId === 'teus' || rangeId === 'opex') {
                 rangeValue = parseFloat(rangeValue).toFixed(2);
-            }
+            }*/
             document.getElementById(rangeId + 'Value').textContent = label + ': ' + rangeValue;
 
             // Update the variables with the new values
