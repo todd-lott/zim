@@ -39,7 +39,7 @@
                 <p><strong>P/FCF:</strong> <span id="pfcfValue">0.00</span></p>
             </div>
         </div>
-        <p id="shareValue">ZIM quarter</p>
+        <p id="shareValue">ZIM Quarterly Calculation Tool</p>
 
         <div class="d-flex justify-content-between mb-4">
             <div class="range-container text-center">
@@ -139,9 +139,9 @@
             let dividend = eps * 0.3; // Example: Dividend = 30% of Net Income
             let pfcf = share_price / (eps * 4);
 
-            document.getElementById('epsValue').textContent = eps.toFixed(2);
+            document.getElementById('epsValue').textContent = `$${eps.toFixed(2)}`;
+            document.getElementById('dividendValue').textContent = `$${dividend.toFixed(2)}`;
             document.getElementById('title').textContent = `ZIM: $${share_price}`;
-            document.getElementById('dividendValue').textContent = dividend.toFixed(2);
             document.getElementById('pfcfValue').textContent = pfcf.toFixed(2);
 
             let result = {
