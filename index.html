@@ -34,9 +34,9 @@
         <div class="d-flex justify-content-between">
             <h1 class="mt-5" id="title">ZIM</h1>
             <div class="text-right mt-5">
-                <p>EPS: <span id="epsValue">0.00</span></p>
-                <p>Dividend: <span id="dividendValue">0.00</span></p>
-                <p>P/FCF: <span id="pfcfValue">0.00</span></p>
+                <p><strong>EPS:</strong> <span id="epsValue">0.00</span></p>
+                <p><strong>Dividend:</strong> <span id="dividendValue">0.00</span></p>
+                <p><strong>P/FCF:</strong> <span id="pfcfValue">0.00</span></p>
             </div>
         </div>
         <p id="shareValue">ZIM quarter</p>
@@ -98,21 +98,19 @@
         getRegularMarketPrice().then(price => {
             console.log('Regular Market Price:', price);
         });
+
         function updateLabel(rangeId, label) {
             var rangeValue = document.getElementById(rangeId).value;
             rangeValue = Number(rangeValue).toLocaleString('en-US');
-            /*if (rangeId === 'teus' || rangeId === 'opex') {
-                rangeValue = parseFloat(rangeValue).toFixed(2);
-            }*/
             document.getElementById(rangeId + 'Value').textContent = label + ': ' + rangeValue;
 
             // Update the variables with the new values
             if (rangeId === 'teus') {
-                teus = rangeValue;
+                teus = Number(rangeValue.replace(/,/g, ''));
             } else if (rangeId === 'ccfi') {
-                ccfi = rangeValue;
+                ccfi = Number(rangeValue.replace(/,/g, ''));
             } else if (rangeId === 'opex') {
-                opex = rangeValue;
+                opex = Number(rangeValue.replace(/,/g, ''));
             }
 
             // Update the chart with the new values
@@ -139,13 +137,12 @@
             // Example EPS and Dividend calculations (these should be based on your actual formulas)
             let eps = net_income / shares_outstanding; // Example: EPS = Net Income / 1000 shares
             let dividend = eps * 0.3; // Example: Dividend = 30% of Net Income
-            let pfcf = share_price / (eps*4)
+            let pfcf = share_price / (eps * 4);
 
             document.getElementById('epsValue').textContent = eps.toFixed(2);
             document.getElementById('title').textContent = `ZIM: $${share_price}`;
             document.getElementById('dividendValue').textContent = dividend.toFixed(2);
             document.getElementById('pfcfValue').textContent = pfcf.toFixed(2);
-
 
             let result = {
                 revenue_container: Math.round(revenue_container / 1000000),
@@ -192,7 +189,7 @@
                         { from: `Operative income: M$${values.op_income}`, to: `Financial expenses: M$${values.financial_expenses}`, flow: values.financial_expenses },
                         { from: `Operative income: M$${values.op_income}`, to: `Net income: M$${values.net_income}`, flow: values.net_income }
                     ],
-                    colorFrom: (context) => context.dataset.data[context.dataIndex].from.includes('Operative income') ? 'grey' : 'grey',
+                    colorFrom: (context) => 'grey',
                     colorTo: (context) => {
                         const toLabel = context.dataset.data[context.dataIndex].to;
                         if (toLabel.includes('Net income')) return 'green';
@@ -240,11 +237,9 @@
         }
 
         const ctx = document.getElementById('mySankeyChart').getContext('2d');
-        const initialValues = calculateValues(teus, ccfi, opex);
         calculateValues(teus, ccfi, opex).then(initialValues => {
             createSankeyChart(ctx, initialValues);
         });
-
 
         // Initial calls to updateLabel to set the displayed values correctly
         updateLabel('teus', 'kTEUs');
