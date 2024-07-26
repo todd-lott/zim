@@ -243,6 +243,12 @@
         calculateValues(teus, ccfi, opex).then(initialValues => {
             createSankeyChart(ctx, initialValues);
         });
+
+
+        // Initial calls to updateLabel to set the displayed values correctly
+        updateLabel('teus', 'kTEUs');
+        updateLabel('ccfi', 'CCFI $ per TEU');
+        updateLabel('opex', 'OPEX $ per TEU');
     </script>
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
