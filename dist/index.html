@@ -43,19 +43,25 @@
 
         <div class="d-flex justify-content-between mb-4">
             <div class="range-container text-center">
-                <input type="range" class="custom-range" id="teus" min="0" max="3000" value="980"
+                <input type="text" class="form-control mb-2" id="teusInput" value="980" style="text-align: right;"
+                    oninput="updateSlider('teusInput', 'teus', 'kTEUs')">
+                <input type="range" class="custom-range" id="teus" min="800" max="1100" value="980"
                     oninput="updateLabel('teus', 'kTEUs')">
-                <small id="teusValue">kTEUs: 980</small>
+                <small id="teusValue">kTEUs</small>
             </div>
             <div class="range-container text-center">
-                <input type="range" class="custom-range" id="ccfi" min="0" max="10000" value="1639"
+                <input type="text" class="form-control mb-2" id="ccfiInput" value="1639" style="text-align: right;"
+                    oninput="updateSlider('ccfiInput', 'ccfi', 'CCFI $ per TEU')">
+                <input type="range" class="custom-range" id="ccfi" min="1400" max="2500" value="1639"
                     oninput="updateLabel('ccfi', 'CCFI $ per TEU')">
-                <small id="ccfiValue">CCFI $ per TEU: 1639</small>
+                <small id="ccfiValue">CCFI $ per TEU</small>
             </div>
             <div class="range-container text-center">
-                <input type="range" class="custom-range" id="opex" min="0" max="5000" value="1225"
+                <input type="text" class="form-control mb-2" id="opexInput" value="1225" style="text-align: right;"
+                    oninput="updateSlider('opexInput', 'opex', 'OPEX $ per TEU')">
+                <input type="range" class="custom-range" id="opex" min="900" max="1500" value="1225"
                     oninput="updateLabel('opex', 'OPEX $ per TEU')">
-                <small id="opexValue">OPEX $ per TEU: 1225</small>
+                <small id="opexValue">OPEX $ per TEU</small>
             </div>
         </div>
 
@@ -102,7 +108,10 @@
         function updateLabel(rangeId, label) {
             var rangeValue = document.getElementById(rangeId).value;
             rangeValue = Number(rangeValue).toLocaleString('en-US');
-            document.getElementById(rangeId + 'Value').textContent = label + ': ' + rangeValue;
+            //document.getElementById(rangeId + 'Value').textContent = label + ': ' + rangeValue;
+
+            // Update the corresponding input field
+            document.getElementById(rangeId + 'Input').value = rangeValue;
 
             // Update the variables with the new values
             if (rangeId === 'teus') {
@@ -115,6 +124,18 @@
 
             // Update the chart with the new values
             updateChart();
+        }
+
+        function updateSlider(inputId, rangeId, label) {
+            var inputValue = document.getElementById(inputId).value;
+            var numericValue = Number(inputValue.replace(/,/g, ''));
+
+            // Ensure input value stays within slider range
+            var slider = document.getElementById(rangeId);
+            if (numericValue >= slider.min && numericValue <= slider.max) {
+                slider.value = numericValue;
+                updateLabel(rangeId, label);
+            }
         }
 
         async function calculateValues(teus, ccfi, opex) {
