@@ -30,44 +30,126 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="d-flex justify-content-between">
-            <h1 class="mt-5" id="title">ZIM</h1>
-            <div class="text-right mt-5">
-                <p><strong>EPS:</strong> <span id="epsValue">0.00</span></p>
-                <p><strong>Dividend:</strong> <span id="dividendValue">0.00</span></p>
-                <p><strong>P/FCF:</strong> <span id="pfcfValue">0.00</span></p>
-            </div>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#"><img src="logo.jpg" alt="Logo" style="height: 60px;"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="inicio-tab" data-toggle="tab" href="#inicio" role="tab"
+                        aria-controls="inicio" aria-selected="true">Inicio</a>
+                </li>
+                <!--li class="nav-item">
+                    <a class="nav-link" id="produccion-tab" data-toggle="tab" href="#produccion" role="tab"
+                        aria-controls="produccion" aria-selected="false">Producción</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="hierro-tab" data-toggle="tab" href="#hierro" role="tab"
+                        aria-controls="hierro" aria-selected="false">Hierro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="costes-tab" data-toggle="tab" href="#costes" role="tab"
+                        aria-controls="costes" aria-selected="false">Costes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="ingresos-tab" data-toggle="tab" href="#ingresos" role="tab"
+                        aria-controls="ingresos" aria-selected="false">Ingresos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="dividendo-tab" data-toggle="tab" href="#dividendo" role="tab"
+                        aria-controls="dividendo" aria-selected="false">Dividendo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="acerca-tab" data-toggle="tab" href="#acerca" role="tab"
+                        aria-controls="acerca" aria-selected="false">Acerca de</a>
+                </li-->
+            </ul>
         </div>
-        <p id="shareValue">ZIM Quarterly Calculation Tool</p>
+    </nav>
 
-        <div class="d-flex justify-content-between mb-4">
-            <div class="range-container text-center">
-                <input type="text" class="form-control mb-2" id="teusInput" value="980" style="text-align: right;"
-                    oninput="updateSlider('teusInput', 'teus', 'kTEUs')">
-                <input type="range" class="custom-range" id="teus" min="800" max="1100" value="980"
-                    oninput="updateLabel('teus', 'kTEUs')">
-                <small id="teusValue">kTEUs</small>
-            </div>
-            <div class="range-container text-center">
-                <input type="text" class="form-control mb-2" id="ccfiInput" value="1639" style="text-align: right;"
-                    oninput="updateSlider('ccfiInput', 'ccfi', 'CCFI $ per TEU')">
-                <input type="range" class="custom-range" id="ccfi" min="1400" max="2500" value="1639"
-                    oninput="updateLabel('ccfi', 'CCFI $ per TEU')">
-                <small id="ccfiValue">CCFI $ per TEU</small>
-            </div>
-            <div class="range-container text-center">
-                <input type="text" class="form-control mb-2" id="opexInput" value="1225" style="text-align: right;"
-                    oninput="updateSlider('opexInput', 'opex', 'OPEX $ per TEU')">
-                <input type="range" class="custom-range" id="opex" min="900" max="1500" value="1225"
-                    oninput="updateLabel('opex', 'OPEX $ per TEU')">
-                <small id="opexValue">OPEX $ per TEU</small>
-            </div>
-        </div>
+    <div class="container mt-5">
+        <div class="tab-content" id="tab-content">
+            <div class="tab-pane fade show active" id="inicio" role="tabpanel">
+                <div class="container">
+                    <div class="d-flex justify-content-between">
+                        <h1 class="mt-5" id="title">ZIM</h1>
+                        <div class="text-right mt-5">
+                            <p><strong>EPS:</strong> <span id="epsValue">0.00</span></p>
+                            <p><strong>Dividend:</strong> <span id="dividendValue">0.00</span></p>
+                            <p><strong>P/FCF:</strong> <span id="pfcfValue">0.00</span></p>
+                        </div>
+                    </div>
+                    <p id="shareValue">ZIM Quarterly Calculation Tool</p>
 
-        <div class="card mt-4">
-            <div class="card-body">
-                <canvas id="mySankeyChart" width="800" height="400"></canvas>
+                    <div class="d-flex justify-content-between mb-4">
+                        <div class="range-container text-center">
+                            <input type="text" class="form-control mb-2" id="teusInput" value="980"
+                                style="text-align: right;" oninput="updateSlider('teusInput', 'teus', 'kTEUs')">
+                            <input type="range" class="custom-range" id="teus" min="800" max="1100" value="980"
+                                oninput="updateLabel('teus', 'kTEUs')">
+                            <small id="teusValue">kTEUs</small>
+                        </div>
+                        <div class="range-container text-center">
+                            <input type="text" class="form-control mb-2" id="ccfiInput" value="1639"
+                                style="text-align: right;"
+                                oninput="updateSlider('ccfiInput', 'ccfi', 'CCFI $ per TEU')">
+                            <input type="range" class="custom-range" id="ccfi" min="1400" max="2500" value="1639"
+                                oninput="updateLabel('ccfi', 'CCFI $ per TEU')">
+                            <small id="ccfiValue">CCFI $ per TEU</small>
+                        </div>
+                        <div class="range-container text-center">
+                            <input type="text" class="form-control mb-2" id="opexInput" value="1225"
+                                style="text-align: right;"
+                                oninput="updateSlider('opexInput', 'opex', 'OPEX $ per TEU')">
+                            <input type="range" class="custom-range" id="opex" min="900" max="1500" value="1225"
+                                oninput="updateLabel('opex', 'OPEX $ per TEU')">
+                            <small id="opexValue">OPEX $ per TEU</small>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <canvas id="mySankeyChart" width="800" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="produccion" role="tabpanel">
+                <!-- Content for Producción tab -->
+                <h1>Producción</h1>
+                <canvas id="produccionChart" width="400" height="200"></canvas>
+            </div>
+            <div class="tab-pane fade" id="hierro" role="tabpanel">
+                <!-- Content for Hierro tab -->
+                <h1>Hierro</h1>
+                <p>Welcome to the Hierro tab content.</p>
+            </div>
+            <div class="tab-pane fade" id="costes" role="tabpanel">
+                <!-- Content for Costes tab -->
+                <h1>Costes</h1>
+                <p>Welcome to the Costes tab content.</p>
+            </div>
+            <div class="tab-pane fade" id="ingresos" role="tabpanel">
+                <!-- Content for Ingresos tab -->
+                <h1>Ingresos</h1>
+                <p>Welcome to the Ingresos tab content.</p>
+            </div>
+            <div class="tab-pane fade" id="dividendo" role="tabpanel">
+                <!-- Content for Dividendo tab -->
+                <h1>Dividendo</h1>
+                <p>Welcome to the Dividendo tab content.</p>
+            </div>
+            <div class="tab-pane fade" id="acerca" role="tabpanel">
+                <!-- Content for Acerca de tab -->
+                <h1>Acerca de</h1>
+                <p>Welcome to the Acerca de tab content.</p>
             </div>
         </div>
     </div>
@@ -267,10 +349,26 @@
         updateLabel('ccfi', 'CCFI $ per TEU');
         updateLabel('opex', 'OPEX $ per TEU');
     </script>
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                // Remove active class from all tabs
+                $('a[data-toggle="tab"]').removeClass('active');
+                // Add active class to the clicked tab
+                $(e.target).addClass('active');
+
+                var target = $(e.target).attr("href"); // Get the tab ID
+                console.log("Tab shown: " + target);
+            });
+            updateLabel('premiumPellets', 'Premium pellets', 'kt');
+            updateLabel('drPellets', 'DR pellets', 'kt');
+            updateLabel('ironOrePrice', 'Iron ore', '$');
+            updateLabel('premiumPrice', 'Premium price', '$')
+            updateLabel('cashCost', 'Cash cost', '$');
+            updateLabel('freightCost', 'Freight Cost', '$');
+        });
+    </script>
+
 </body>
 
 </html>
