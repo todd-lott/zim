@@ -50,11 +50,11 @@
                     <a class="nav-link" id="scfu-tab" data-toggle="tab" href="#scfi" role="tab"
                         aria-controls="scfi" aria-selected="false">SCFI</a>
                 </li>
-                <!--li class="nav-item">
-                    <a class="nav-link" id="hierro-tab" data-toggle="tab" href="#hierro" role="tab"
-                        aria-controls="hierro" aria-selected="false">Hierro</a>
-                </li>
                 <li class="nav-item">
+                    <a class="nav-link" id="fbx-tab" data-toggle="tab" href="#fbx" role="tab"
+                        aria-controls="fbx" aria-selected="false">FBX</a>
+                </li>
+                <!--li class="nav-item">
                     <a class="nav-link" id="costes-tab" data-toggle="tab" href="#costes" role="tab"
                         aria-controls="costes" aria-selected="false">Costes</a>
                 </li>
@@ -126,10 +126,14 @@
                 <h1>SCFI</h1>
                 <img src="https://www.sse.net.cn/index/indexImg?name=scfi&amp;type=english" width="755" height="300" vspace="10">
             </div>
-            <div class="tab-pane fade" id="hierro" role="tabpanel">
+            <div class="tab-pane fade" id="fbx" role="tabpanel">
                 <!-- Content for Hierro tab -->
-                <h1>Hierro</h1>
-                <p>Welcome to the Hierro tab content.</p>
+                <h1>FBX</h1>
+                <div class="infogram-embed" 
+                    data-id="_/AcDi5xXouXrzQMLqbVpj" 
+                    data-type="interactive" 
+                    data-title="Embeddable FBX Chart (FBX Global)">
+                </div>
             </div>
             <div class="tab-pane fade" id="costes" role="tabpanel">
                 <!-- Content for Costes tab -->
@@ -367,6 +371,22 @@
             updateLabel('cashCost', 'Cash cost', '$');
             updateLabel('freightCost', 'Freight Cost', '$');
         });
+    </script>
+    <script>
+        !function(e,n,i,s){
+            var d="InfogramEmbeds";
+            var o=e.getElementsByTagName(n)[0];
+            if(window[d]&&window[d].initialized)
+                window[d].process&&window[d].process();
+            else if(!e.getElementById(i)){
+                var r=e.createElement(n);
+                r.async=1,
+                r.id=i,
+                r.src=s,
+                o.parentNode.insertBefore(r,o)
+            }
+        }(document,"script","infogram-async",
+          "https://e.infogram.com/js/dist/embed-loader-min.js");
     </script>
 
 </body>
